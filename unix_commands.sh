@@ -244,3 +244,6 @@ then
 	echo ${FILE_CONTENT}
 fi
 
+# renaming bulk file in UNIX
+#filename contains patern as 2016 and want to renamed it to 2017
+rename '2016' '2017' *.txt 
