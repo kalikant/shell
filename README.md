@@ -1,2 +1,2 @@
 # shell
-Here I tried to collect most of commands which I have come across my daily work. 
+Here I tried to collect useful commands which I have come across during my daily work. 
