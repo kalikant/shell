@@ -13,7 +13,7 @@ set -x
 FILE_NAME=$1 # this file contains sql for oracle
 USER_NAME=$USERNAME  # comes from environment_variables.env
 PASSWORD=`sh -x $BASE_PATH/appl/common/bin/decrypt.sh $BASE_PATH/appl/common/bin/pwd_out.dat` # comes from ecryption decryption password file
-CONNECTION_STRING=$CONNECTION_STRING # comes from environment_variables.env
+CONNECTION_STRING="(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(Host=hostname.example.com)(Port=1234))(CONNECT_DATA=(SERVICE_NAME=service_name.example.com)))"
 
 sqlplus -s $USER_NAME/$PASSWORD@$CONNECTION_STRING @$FILE_NAME
 if [ $? -eq 0 ]
