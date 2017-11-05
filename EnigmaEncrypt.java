@@ -1,6 +1,9 @@
 import java.io.PrintStream;
 import org.jetel.util.crypto.Enigma;
 
+// add below dependency jars
+// cloveretl.engine.jar, commons-cli-1.0.jar, commons-logging.jar
+
 public class EnigmaEncrypt
 {
   public static void main(String[] paramArrayOfString)
