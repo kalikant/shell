@@ -236,3 +236,11 @@ while read line
 do 
 	echo "${line} | appending data " >> $ENV_PATH/xyz.txt
 done < $ENV_PATH/abc.txt
+
+# checking if file is not empty or string is not empty in UNIX
+FILE_CONTENT=`cat /abc/xyz.txt`
+if [ ! -z ${FILE_CONTENT} ] 
+then 
+	echo ${FILE_CONTENT}
+fi
+
