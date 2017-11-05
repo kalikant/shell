@@ -231,3 +231,8 @@ ROW_COUNT=`awk 'BEGIN{}END{print NR}' /abc/xyz/abc.txt `
 # reducing count by 2 for 1 heade and 1 traile record
 ACTUAL_ROW_COUNT=$(($ROW_COUNT-2))
 
+# read each line from a file and process it to create new unix file
+while read line
+do 
+	echo "${line} | appending data " >> $ENV_PATH/xyz.txt
+done < $ENV_PATH/abc.txt
