@@ -4,6 +4,9 @@
 # null count in data file
 grep '^ANULL^A' abc.txt |wc -l
 
+# to make file blank before adding anything
+> $UNIX_FILEPATH/abc.txt
+
 # exact word count in file with case
 grep -w 'Kalikant Jha' abc.txt |wc -l
 
