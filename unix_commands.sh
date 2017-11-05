@@ -181,6 +181,17 @@ do
 	mv *"${EACH_DATE}"* /abc/xyz/"${EACH_DATE}"/
 done
 
+# bypass errors and continue processing in UNIX loop
+if [[ $? -ne 0 ]]
+then
+	cat /dev/null > $ERROR_STATUS_FILE
+	echo "Error in distcp for the table ${table_name}/${part_name}=${partition}" >> $LOG_FILE
+		echo -e "\n" >> $LOG_FILE
+		exit 1
+	else
+		run_status="SUCCEEDED"
+fi
+cat /dev/null > $ERROR_STATUS_FILE
 
 # writing log into Log file in unix , function example in UNIX
 write_log () {
@@ -247,3 +258,7 @@ fi
 # renaming bulk file in UNIX
 #filename contains patern as 2016 and want to renamed it to 2017
 rename '2016' '2017' *.txt 
+
+# loading data into hive from UNIX 
+hive -e "load data local inpath '/data/staging/*.txt' overwrite into table hive_db.hive_table PARTITION(date='2016-06-30');"
+
