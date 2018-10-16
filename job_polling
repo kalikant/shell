@@ -1,0 +1,70 @@
+#!/bin/bash -e
+
+NARGS=4
+ACTUAL=$#
+if [ $ACTUAL -gt  $NARGS ]
+then
+    echo $ACTUAL" args supplied; expecting $NARGS args only; 
+	if you are using custom parameters or filters, 
+	make sure to modify this script to include these additional parameters as well"
+    echo "Usage: script <workflow_name> <source> <country> <BIZ_DAY> <...>"
+    exit
+fi
+
+if [ $ACTUAL -lt $NARGS ]
+then
+    echo $ACTUAL" arguments supplied; require $NARGS"
+    echo "Usage: script <workflow_name> <source> <country> <BIZ_DAY> <...>"
+    exit
+fi
+
+WORKFLOW_NAME=$1
+SOURCE=$2
+COUNTRY=$3
+BIZ_DAY=$4
+
+#Modify if not default
+EF_SERVER=localhost
+EF_PORT=XXXXX
+serverurl="http://${EF_SERVER}:${EF_PORT}"
+echo "Using $serverurl"
+
+OUTPUT=`sh client.sh  execution -run --workflow ${WORKFLOW_NAME}  --BIZ_DAY $BIZ_DAY --param source=$SOURCE --param country=$COUNTRY --server $serverurl`
+
+#JobID: 0000560-150819131828363-oozie-oozi-W Execution date: 8/31/15 4:51 PM Status: RUNNING
+echo $OUTPUT
+#jobID=`echo $OUTPUT | grep JobID | cut -d" " -f2`
+jobID=`echo $OUTPUT | grep JobID | cut -d "J" -f 2 | cut -d":" -f 2 | cut -d" " -f2`
+echo $jobID
+job_status_output=`sh client.sh execution -status --jobid $jobID --server $serverurl`
+
+echo "Job: "$jobID
+waitingstatus="WAITING RUNNING"
+status=${waitingstatus[0]}
+
+totaltime=0
+POLL_FREQ=10
+POLL_TIMEOUT=10800
+while [[ ${waitingstatus} =~ ${status} ]]
+do
+    sleep ${POLL_FREQ}
+    output=`sh client.sh execution -status --jobid $jobID --server $serverurl`
+    outputToken=( $output )
+    status=${outputToken[8]}
+    echo "status: " $status
+    totaltime=`echo "$totaltime+${POLL_FREQ}" | bc`
+    if [ $totaltime -gt ${POLL_TIMEOUT} ]
+    then
+        status="TIMED OUT"
+        echo "status: " $status
+        exit 2
+    fi
+done
+
+if [[ $status != "SUCCEEDED" ]]
+then
+    exit 1
+fi
+
+exit 0
+                      
