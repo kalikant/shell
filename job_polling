@@ -67,4 +67,11 @@ then
 fi
 
 exit 0
-                      
+ 
+ 
+ 
+ 
+ ## client.sh content 
+ 
+ java  -cp "./*:lib/*:/usr/hdp/current/oozie-client/lib/*:/usr/hdp/current/hadoop-client/lib/*" org.ef.client.EfClient "$@" --server http://localhost:XXXXXX
+
