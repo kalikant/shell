@@ -262,3 +262,28 @@ rename '2016' '2017' *.txt
 # loading data into hive from UNIX 
 hive -e "load data local inpath '/data/staging/*.txt' overwrite into table hive_db.hive_table PARTITION(date='2016-06-30');"
 
+cut -d"^" -f 89 abc_xyz.txt | sort | uniq
+A30
+A50
+cut -d"^" -f89 abc_xyz.txt | sort | uniq -c
+446871 A30
+ 26209 A50
+awk -F'^' '$89=="A30" { print $0 }' abc_xyz.txt | head -1
+OUTPUT - FULL ROW
+
+
+Remove duplidates based on "All columns except first":
+awk -F"," '!_[$2]++' filename
+
+Remove duplidates based on "4th,5th,6th" columns:
+awk -F"^A" '!_[$4,$5,$6]++' filename
+
+Shortcut in vi editor:
+Shift+G  - cursor at end 
+Ctrl+G    - no. of records
+
+Append D^A value in all the rows as 1st column:
+sed -i "s/^/D^A/g" abc_xyz.txt
+
+Remove columns from 7 to 9
+awk -F"" '[$1,$2,$3,$4,$5,$6,$10,$11]' abc.txt > xyz.txt
