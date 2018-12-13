@@ -287,3 +287,4 @@ sed -i "s/^/D^A/g" abc_xyz.txt
 
 Remove columns from 7 to 9
 awk -F"" '[$1,$2,$3,$4,$5,$6,$10,$11]' abc.txt > xyz.txt
+awk -F"" '{$6=$8=""; print $0}' file 
