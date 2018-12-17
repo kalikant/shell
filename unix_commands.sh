@@ -288,3 +288,16 @@ sed -i "s/^/D^A/g" abc_xyz.txt
 Remove columns from 7 to 9
 awk -F"" '[$1,$2,$3,$4,$5,$6,$10,$11]' abc.txt > xyz.txt
 awk -F"" '{$6=$8=""; print $0}' file 
+
+# spark submit command
+spark-submit \
+--master yarn \
+--deploy-mode cluster \
+--num-executors 1 \
+--driver-memory 1g \
+--executor-memory 1g \
+--executor-cores 4 \
+--files /home/m2/repository/hive-site.xml \
+--class spark.examples.JavaSparkSQLExample \
+--jars /home/m2/lib/datanucleus-api-jdo-3.2.6.jar,/home/m2/lib/datanucleus-rdbms-3.2.9.jar,/home/m2/lib/datanucleus-core-3.2.10.jar /home/utilities/examples-0.0.1-SNAPSHOT.jar "hdfs://xxxxxxxx/data/table/date=2017_01_06/" "hdfs://xxxxxxxx/data/table/date=2017_01_07/"
+
